@@ -8,6 +8,7 @@ import {
   FiActivity,
   FiSun,
   FiMoon,
+  FiLogOut,
 } from "react-icons/fi";
 import {
   Chart as ChartJS,
@@ -25,6 +26,8 @@ import {
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { statsAPI } from "../api";
 import { useTheme } from "../context/ThemeContext";
+import Modal from "../components/Modal";
+import { useAuth } from "../context/AuthContext";
 
 // Регистрация компонентов ChartJS
 ChartJS.register(
@@ -581,8 +584,17 @@ const StatsOverview = () => {
 };
 
 const AdminPage = () => {
+  const { logout } = useAuth();
   const [period, setPeriod] = useState("month");
   const { theme, toggleTheme } = useTheme();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const handleLogout = () => setShowLogoutModal(true);
+  const confirmLogout = () => {
+    logout();
+    setShowLogoutModal(false);
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
@@ -607,6 +619,21 @@ const AdminPage = () => {
                 <FiMoon className="mr-2" />
               )}
               {theme === "dark" ? "Светлая тема" : "Темная тема"}
+            </button>
+            <button
+              onClick={() => handleLogout()}
+              className="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-700 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-200"
+              title={
+                theme === "dark"
+                  ? "Переключить на светлую тему"
+                  : "Переключить на темную тему"
+              }
+            >
+              {theme === "dark" ? (
+                <FiLogOut className="" color="#fff" />
+              ) : (
+                <FiLogOut className="" color="#000" />
+              )}
             </button>
           </div>
         </div>
@@ -661,6 +688,31 @@ const AdminPage = () => {
           </div>
         </div>
       </main>
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        title="Подтверждение выхода"
+        actions={
+          <>
+            <button
+              onClick={() => setShowLogoutModal(false)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              Отмена
+            </button>
+            <button
+              onClick={confirmLogout}
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Выйти
+            </button>
+          </>
+        }
+      >
+        <p className="text-gray-700 dark:text-gray-300">
+          Вы действительно хотите выйти из аккаунта?
+        </p>
+      </Modal>
     </div>
   );
 };

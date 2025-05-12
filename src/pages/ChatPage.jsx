@@ -50,7 +50,7 @@ const ChatPage = () => {
     }
   };
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin()) {
       navigate("/admin");
     }
   }, []);
@@ -251,7 +251,9 @@ const ChatPage = () => {
   // Tizim xabarlarini render qilish
   const renderSystemMessage = (msg) => {
     return (
-      <div className="prose dark:prose-invert prose-sm max-w-none">
+      <div
+        className={`prose dark:prose-invert prose-sm max-w-none text-gray-800 dark:text-gray-50 `}
+      >
         <ReactMarkdown
           rehypePlugins={[rehypeRaw, rehypeSanitize]}
           remarkPlugins={[remarkGfm]}
@@ -645,7 +647,7 @@ const ChatPage = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Опишите ваши симптомы..."
-                  className="flex-1 border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-primary-500 focus:border-primary-500 block w-full rounded-md sm:text-sm"
+                  className="flex-1 border-gray-300 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-primary-500 focus:border-primary-500 block w-full rounded-md sm:text-sm"
                   disabled={loading}
                   ref={inputRef}
                 />
