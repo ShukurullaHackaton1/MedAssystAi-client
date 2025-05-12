@@ -14,6 +14,7 @@ import ChatPage from "./pages/ChatPage";
 import AdminPage from "./pages/AdminPage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import Loader from "./components/loading";
 
 // Приватный маршрут
 const PrivateRoute = ({ element, requireAdmin = false }) => {
@@ -22,7 +23,7 @@ const PrivateRoute = ({ element, requireAdmin = false }) => {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        Загрузка...
+        <Loader />
       </div>
     );
   }

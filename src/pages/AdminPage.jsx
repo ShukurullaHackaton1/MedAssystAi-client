@@ -28,6 +28,7 @@ import { statsAPI } from "../api";
 import { useTheme } from "../context/ThemeContext";
 import Modal from "../components/Modal";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../components/loading";
 
 // Регистрация компонентов ChartJS
 ChartJS.register(
@@ -206,7 +207,7 @@ const SymptomStatsChart = ({ period }) => {
     fetchData();
   }, [period]);
 
-  if (loading) return <div className="text-center p-4">Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div className="text-center p-4 text-red-500 dark:text-red-400">
@@ -307,7 +308,7 @@ const DailyStatsChart = ({ period }) => {
     fetchData();
   }, [period]);
 
-  if (loading) return <div className="text-center p-4">Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div className="text-center p-4 text-red-500 dark:text-red-400">
@@ -376,6 +377,7 @@ const DiagnosisStatsChart = ({ period }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { theme } = useTheme();
+  console.log(period);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -392,7 +394,7 @@ const DiagnosisStatsChart = ({ period }) => {
         });
 
         const chartData = {
-          labels: data.map((item) => item.diagnosis),
+          labels: data.map((item) => `${item.diagnosis.slice(0, 40)}...`),
           datasets: [
             {
               label: "Количество",
@@ -416,7 +418,7 @@ const DiagnosisStatsChart = ({ period }) => {
     fetchData();
   }, [period]);
 
-  if (loading) return <div className="text-center p-4">Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div className="text-center p-4 text-red-500 dark:text-red-400">
@@ -476,7 +478,7 @@ const StatsOverview = () => {
     fetchData();
   }, []);
 
-  if (loading) return <div className="text-center p-4">Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div className="text-center p-4 text-red-500 dark:text-red-400">
