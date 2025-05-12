@@ -49,6 +49,11 @@ const ChatPage = () => {
       toast.error("Не удалось загрузить историю чатов");
     }
   };
+  useEffect(() => {
+    if (isAdmin) {
+      navigate("/admin");
+    }
+  }, []);
 
   // Chatni yuklash
   const fetchChat = async (chatId) => {
@@ -375,15 +380,6 @@ const ChatPage = () => {
           </h1>
           <div className="flex gap-3">
             <div className="flex items-center space-x-2">
-              {isAdmin() && (
-                <button
-                  onClick={() => navigate("/admin")}
-                  className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-                  title="Панель администратора"
-                >
-                  <FiUser size={18} />
-                </button>
-              )}
               <DropdownMenu
                 trigger={
                   <button
